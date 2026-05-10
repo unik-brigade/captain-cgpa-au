@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AU Smart CGPA Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+    <!-- Background Elements -->
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+
+    <div class="app-container">
+        <!-- Sidebar / Navigation -->
+        <header class="topbar glass-panel">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <div>
+                    <h1>AU Smart Calc</h1>
+                    <span>Reg 2025 | MCA & MBA</span>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <button id="theme-toggle" class="icon-btn" title="Toggle Theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button id="export-pdf" class="btn btn-primary">
+                    <i class="fas fa-file-pdf"></i> Export
+                </button>
+            </div>
+        </header>
+
+        <main class="main-content" id="export-content">
+            <!-- Dashboard Summary -->
+            <section class="dashboard-summary">
+                <div class="summary-card glass-panel cgpa-card">
+                    <div class="cgpa-circle">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="progress" cx="50" cy="50" r="45" id="cgpa-progress"></circle>
+                        </svg>
+                        <div class="cgpa-value">
+                            <span id="overall-cgpa">0.00</span>
+                            <small>CGPA</small>
+                        </div>
+                    </div>
+                    <div class="cgpa-details">
+                        <div class="detail-item">
+                            <i class="fas fa-percentage"></i>
+                            <div>
+                                <span id="overall-percentage">0.0%</span>
+                                <small>Percentage</small>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-book-open"></i>
+                            <div>
+                                <span id="total-credits">0</span>
+                                <small>Total Credits</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="program-selector glass-panel">
+                    <h3>Select Program</h3>
+                    <div class="toggle-group">
+                        <input type="radio" id="prog-mca" name="program" value="MCA" checked>
+                        <label for="prog-mca">MCA</label>
+
+                        <input type="radio" id="prog-mba" name="program" value="MBA">
+                        <label for="prog-mba">MBA</label>
+                    </div>
+                    <div class="quick-add">
+                        <button id="add-semester-btn" class="btn btn-secondary w-100">
+                            <i class="fas fa-plus"></i> Add New Semester
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Student Information -->
+            <section class="student-info glass-panel" style="margin-bottom: 2rem; padding: 1.5rem;">
+                <h3 style="margin-bottom: 1rem; font-size: 1.2rem;">Student Details (For PDF Export)</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div>
+                        <label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-secondary);">Student Name <span style="color:var(--danger-color)">*</span></label>
+                        <input type="text" id="student-name" class="input-field" placeholder="Enter Name" required>
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-secondary);">Register Number <span style="color:var(--danger-color)">*</span></label>
+                        <input type="text" id="register-number" class="input-field" placeholder="Enter Reg No." required>
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-secondary);">College Name <span style="color:var(--danger-color)">*</span></label>
+                        <input type="text" id="college-name" class="input-field" placeholder="Enter College" required>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Semesters Container -->
+            <section class="semesters-container" id="semesters-container">
+                <!-- Semester Template will be injected here -->
+            </section>
+
+            <!-- Feedback Section -->
+            <section class="feedback-section glass-panel" style="margin-top: 2rem; padding: 1.5rem;">
+                <h3 style="margin-bottom: 1rem; font-size: 1.2rem; color: var(--primary-color);">Send Feedback</h3>
+                <form id="feedback-form" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div>
+                        <label
+                            style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-secondary);">Your
+                            Name</label>
+                        <input type="text" id="feedback-name" class="input-field" placeholder="Enter Name" required>
+                    </div>
+                    <div>
+                        <label
+                            style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-secondary);">Email</label>
+                        <input type="email" id="feedback-email" class="input-field" placeholder="Enter Email" required>
+                    </div>
+                    <div>
+                        <label
+                            style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-secondary);">Message</label>
+                        <textarea id="feedback-message" class="input-field" placeholder="Type your message here..."
+                            rows="4" required style="resize: vertical;"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="feedback-submit-btn"
+                        style="align-self: flex-start;">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer glass-panel"
+            style="margin-top: 2rem; padding: 1.5rem; text-align: center; border-radius: 28px; margin-bottom: 2rem;">
+            <p style="font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.5rem;">Powered by <strong
+                    style="color: var(--primary-color);">Unik Code Factory</strong></p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">&copy; 2025 All Rights Reserved. Innovated by
+                <span style="color: #ef4444;">💗</span> SatXsk.
+            </p>
+        </footer>
+    </div>
+
+    <!-- Error Toast -->
+    <div id="toast" class="toast hidden">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="toast-msg">Error message</span>
+    </div>
+
+    <!-- Magic Success Toast -->
+    <div id="magic-toast" class="magic-toast">
+        <div class="magic-toast-content">
+            <i class="fas fa-magic spark-icon"></i>
+            <span id="magic-toast-msg">Feedback transmitted!</span>
+            <div class="toast-glow"></div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
